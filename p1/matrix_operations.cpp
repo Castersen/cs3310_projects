@@ -15,11 +15,10 @@ void print_2d_matrix(matrix_2d m) {
 matrix_2d slice_2d_matrix(matrix_2d m, int x0, int x1, int y0, int y1) {
     matrix_2d result;
     std::vector<int> temp;
-    int N = m.size();
 
-    for( ; x0 < x1; ++x0 ) {
-        for( ; y0 < y1; ++y0) {
-            temp.push_back(m[y0][x0]);
+    for( ; y0 < y1; ++y0 ) {
+        for(int col = x0; col < x1; ++col) {
+            temp.push_back(m[y0][col]);
         }
         result.push_back(temp);
         temp.clear();
