@@ -56,8 +56,11 @@ matrix_2d naive_divide_and_conquer(matrix_2d m1, matrix_2d m2) {
 */
 matrix_2d strassen_multiply(int n, matrix_2d A, matrix_2d B){
 	matrix_2d result = fill_matrix_with_zeroes(A.size());
-	if(n == 1){
-		result[0][0] = A[0][0] * B[0][0];
+	if(n == 2) {
+		result[0][0] = A[0][0] * B[0][0] + A[0][1] * B[1][0];
+		result[0][1] = A[0][0] * B[0][1] + A[0][1] * B[1][1];
+		result[1][0] = A[1][0] * B[0][0] + A[1][1] * B[1][0];
+		result[1][1] = A[1][0] * B[0][1] + A[1][1] * B[1][1];
 		return result;
 	}
    matrix_2d A11, A12, A21, A22,
