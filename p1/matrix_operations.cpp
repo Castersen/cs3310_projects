@@ -1,5 +1,6 @@
 #include <iostream>
 #include <tuple>
+#include "math.h"
 #include "matrix_operations.h"
 
 void print_2d_matrix(matrix_2d m) {
@@ -9,6 +10,39 @@ void print_2d_matrix(matrix_2d m) {
             std::cout << m[i][j] << " ";
         }
         std::cout << std::endl;
+    }
+}
+void pad_2d_matrix(matrix_2d& m) {
+    int largestSide = std::max(m.size(), m[0].size());
+    int newSize = largestSide;
+    if(largestSide == m.size()) {
+        if(m.size() % 2 == 1) {
+            ++newSize;
+            std::vector<int> padVec = fill_array_with_zeroes(newSize);
+            m.push_back(padVec);
+        }
+        int cols_to_pad = newSize - m[0].size();
+        int N = m.size();
+        for(int i = 0; i < N; ++i) {
+            for(int j = 0; j < cols_to_pad; ++j)
+            {
+                m[i].push_back(0);
+            }
+        }
+    }
+    else if (largestSide == m[0].size()) {
+        if(m[0].size() % 2 == 1) {
+            ++newSize;
+            int N = m.size();
+            for(int i = 0; i < N; ++i) {
+                m[i].push_back(0);
+            }
+        }
+        int rows_to_pad = newSize - m.size();
+        for(int i = 0; i < rows_to_pad; ++i) {
+            std::vector<int> padVec = fill_array_with_zeroes(newSize);
+            m.push_back(padVec);
+        }
     }
 }
 
@@ -70,6 +104,14 @@ std::tuple<matrix_2d, matrix_2d, matrix_2d, matrix_2d> split_matrix(matrix_2d m)
     return std::make_tuple(q1, q2, q3, q4);
 }
 
+std::vector<int> fill_array_with_zeroes(int size) {
+    std::vector<int> result;
+
+    for(int i = 0; i < size; ++i) {
+        result.push_back(0);
+    }
+    return result;
+}
 matrix_2d fill_matrix_with_zeroes(int size) {
     matrix_2d result;
     std::vector<int> temp;
