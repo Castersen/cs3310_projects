@@ -84,3 +84,21 @@ matrix_2d fill_matrix_with_zeroes(int size) {
 
     return result;
 }
+
+void merge_2d_matrix(matrix_2d& z, matrix_2d m, int x0, int x1, int y0, int y1) {
+    for(int j = 0; y0 < y1; ++y0, ++j)
+        for(int col = x0, k = 0; col < x1; ++col, ++k)
+            z[y0][col] = m[j][k];
+}
+
+matrix_2d combine_matrix(matrix_2d m1, matrix_2d m2, matrix_2d m3, matrix_2d m4) {
+    matrix_2d combined = fill_matrix_with_zeroes(m1.size() * 2);
+    int N = combined.size();
+
+    merge_2d_matrix(combined, m1, 0, N/2, 0, N/2);
+    merge_2d_matrix(combined, m2, N/2, N, 0, N/2);
+    merge_2d_matrix(combined, m3, 0, N/2, N/2, N);
+    merge_2d_matrix(combined, m4, N/2, N, N/2, N);
+
+    return combined;
+}
