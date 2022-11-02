@@ -1,6 +1,7 @@
 #include <iostream>
 #include <tuple>
 #include "math.h"
+#include <cstdlib>
 #include "matrix_operations.h"
 
 void print_2d_matrix(matrix_2d m) {
@@ -143,4 +144,20 @@ matrix_2d combine_matrix(matrix_2d m1, matrix_2d m2, matrix_2d m3, matrix_2d m4)
     merge_2d_matrix(combined, m4, N/2, N, N/2, N);
 
     return combined;
+}
+
+std::tuple<matrix_2d, matrix_2d> generate_random_matrix(int size) {
+    matrix_2d m1 = fill_matrix_with_zeroes(size);
+    matrix_2d m2 = fill_matrix_with_zeroes(size);
+
+    srand((unsigned) time(NULL));
+
+    for(int i = 0; i < size; ++i) {
+        for(int j = 0; j < size; ++j) {
+            m1[i][j] = 50 - rand() % 150;
+            m2[i][j] = 50 - rand() % 150;
+        }
+    }
+
+    return std::make_tuple(m1, m2);
 }
