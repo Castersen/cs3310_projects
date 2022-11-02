@@ -44,3 +44,36 @@ matrix_2d naive_divide_and_conquer(matrix_2d m1, matrix_2d m2) {
 
 	return C;
 }
+
+/*
+* Will multiply two matricies together using the Strassen method.
+* n: The size of the 2d array.
+* A: The first matrix to multiply.
+* B: The second matrix to multiply.
+*/
+matrix_2d strassen_multiply(int n, matrix_2d A, matrix_2d B){
+	matrix_2d result = fill_matrix_with_zeroes(A.size());
+	if(n == 1){
+		result[0][0] = A[0][0] * B[0][0];
+		return result;
+	}
+   matrix_2d A11, A12, A21, A22,
+				 B11, B12, B21, B22;
+	std::tie(A11, A12, A21, A22) = split_matrix(A);
+	std::tie(B11, B12, B21, B22) = split_matrix(B);
+	matrix_2d P1 = strassen_multiply(n/2, A11, subtract_2d_matrix(B12, B22));
+	matrix_2d P2 = strassen_multiply(n/2, add_2d_matrix(A11, A12), B22);
+	matrix_2d P3 = strassen_multiply(n/2, add_2d_matrix(A21, A22), B11);
+	matrix_2d P4 = strassen_multiply(n/2, A22, subtract_2d_matrix(B21, B11));
+	matrix_2d P5 = strassen_multiply(n/2, add_2d_matrix(A11, A22), add_2d_matrix(B11, B22));
+	matrix_2d P6 = strassen_multiply(n/2, subtract_2d_matrix(A12 , A22), add_2d_matrix(B21, B22));
+	matrix_2d P7 = strassen_multiply(n/2, subtract_2d_matrix(A11, A21), add_2d_matrix(B11, B12));
+
+	matrix_2d C11 = add_2d_matrix(subtract_2d_matrix(P4, P2), add_2d_matrix(P5, P6));
+	matrix_2d C12 = add_2d_matrix(P1, P2);
+	matrix_2d C21 = add_2d_matrix(P3, P4);
+	matrix_2d C22 = add_2d_matrix(subtract_2d_matrix(P1, P3), subtract_2d_matrix(P5, P7));
+
+	matrix_2d C = combine_matrix(C11, C12, C21, C22);
+	return C;
+}
