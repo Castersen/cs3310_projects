@@ -13,29 +13,29 @@ int main() {
 	matrix_2d t1, t2;
 
 	for(int i = 1; i <= 15; ++i) {
-		std::tie(t1, t2) = generate_random_matrix(pow(2, i));
-		pad_2d_matrix(t1);
-		pad_2d_matrix(t2);
+		std::tie(t1, t2) = generate_random_matrices(pow(3, i));
+		int number = pow(2, std::ceil(std::log(pow(3,i))/std::log(2)));
+		pad_matrices_till_square(t1, t2);
 
 	    auto start = std::chrono::high_resolution_clock::now();
 		classic_matrix_multiply(t1, t2);
 		auto stop = std::chrono::high_resolution_clock::now();
 		auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-		std::cout << "Algo: Classic Matrix Multiply " << "Number: " << pow(2,i)
+		std::cout << "Algo: Classic Matrix Multiply " << "Number: " << number
 					 <<  " Time: " << duration.count() << " microseconds" << std::endl;
 
 	    start = std::chrono::high_resolution_clock::now();
 		naive_divide_and_conquer(t1, t2);
 		stop = std::chrono::high_resolution_clock::now();
 		duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-		std::cout << "Algo: Naive Divide and Conquer Matrix Multiply " << "Number: " << pow(2,i)
+		std::cout << "Algo: Naive Divide and Conquer Matrix Multiply " << "Number: " << number
 					 <<  " Time: " << duration.count() << " microseconds" << std::endl;
 
 	    start = std::chrono::high_resolution_clock::now();
 		strassen_multiply(t1.size(), t1, t2);
 		stop = std::chrono::high_resolution_clock::now();
 		duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-		std::cout << "Algo: Strassen Matrix Multiply " << "Number: " << pow(2,i)
+		std::cout << "Algo: Strassen Matrix Multiply " << "Number: " << number
 					 <<  " Time: " << duration.count() << " microseconds" << std::endl;
 		std::cout << "\n\n";
 	}

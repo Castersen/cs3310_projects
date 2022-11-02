@@ -13,38 +13,46 @@ void print_2d_matrix(matrix_2d m) {
         std::cout << std::endl;
     }
 }
-void pad_2d_matrix(matrix_2d& m) {
-    int largestSide = std::max(m.size(), m[0].size());
-    int newSize = largestSide;
-    if(largestSide == m.size()) {
-        if(m.size() % 2 == 1) {
-            ++newSize;
-            std::vector<int> padVec = fill_array_with_zeroes(newSize);
-            m.push_back(padVec);
-        }
-        int cols_to_pad = newSize - m[0].size();
-        int N = m.size();
-        for(int i = 0; i < N; ++i) {
-            for(int j = 0; j < cols_to_pad; ++j)
-            {
-                m[i].push_back(0);
-            }
-        }
+
+void pad_matrices_till_square(matrix_2d& m1, matrix_2d& m2) {
+    // If both are already square matrices of the same size no need to pad
+    if((m1.size() == m2.size()) and (m1[0].size() == m2[0].size())
+        and (pow(2,std::floor(std::log(m1.size()*m1[0].size())/std::log(2))) 
+                == m1.size()*m1[0].size())) 
+    {
+            return;
     }
-    else if (largestSide == m[0].size()) {
-        if(m[0].size() % 2 == 1) {
-            ++newSize;
-            int N = m.size();
-            for(int i = 0; i < N; ++i) {
-                m[i].push_back(0);
-            }
+    int m1_largest_side = std::max(m1.size(), m1[0].size());
+    int m2_largest_side = std::max(m2.size(), m2[0].size());
+    int largest_side = std::max(m1_largest_side, m2_largest_side);
+
+    // used to determine the next closest power of 2, idea
+    // 2^n = 12 -> nln(2) = ln(12) -> n = ln(12)/ln(2) n = 3.54
+    // now if we take the ceiling we know the next closest power of 2
+    // is 2^4 = 16, so that is our padding constant
+    int padding_constant = pow(2, std::ceil(std::log(largest_side)/std::log(2)));
+
+    // pad columns with 0s
+    for(int i = 0; i < m1.size(); ++i)
+        if(m1[i].size() < padding_constant) {
+            std::vector<int> pad_col(padding_constant-m1[i].size());
+            m1[i].insert(m1[i].end(), pad_col.begin(), pad_col.end());
         }
-        int rows_to_pad = newSize - m.size();
-        for(int i = 0; i < rows_to_pad; ++i) {
-            std::vector<int> padVec = fill_array_with_zeroes(newSize);
-            m.push_back(padVec);
+    for(int i = 0; i < m2.size(); ++i)
+        if(m2[i].size() < padding_constant) {
+            std::vector<int> pad_col(padding_constant-m2[i].size());
+            m2[i].insert(m2[i].end(), pad_col.begin(), pad_col.end());
         }
-    }
+
+    // pad rows with 0s
+    std::vector<int> row_pad(largest_side);
+    int m1_number_of_rows_to_add = padding_constant - m1.size();
+    int m2_number_of_rows_to_add = padding_constant - m2.size();
+    for(int i = 0; i < m1_number_of_rows_to_add; ++i)
+        m1.push_back(row_pad);
+
+    for(int i = 0; i < m2_number_of_rows_to_add; ++i)
+        m2.push_back(row_pad);
 }
 
 matrix_2d slice_2d_matrix(matrix_2d m, int x0, int x1, int y0, int y1) {
@@ -63,33 +71,23 @@ matrix_2d slice_2d_matrix(matrix_2d m, int x0, int x1, int y0, int y1) {
 }
 
 matrix_2d add_2d_matrix(matrix_2d m1, matrix_2d m2) {
-    matrix_2d result;
-    std::vector<int> temp;
+    matrix_2d result = fill_matrix_with_zeroes(m1.size());
     int N = m1.size();
 
-    for(int i = 0; i < N; ++i) {
-        for(int j = 0; j < N; ++j) {
-            temp.push_back(m1[i][j] + m2[i][j]);
-        }
-        result.push_back(temp);
-        temp.clear();
-    }
+    for(int i = 0; i < N; ++i)
+        for(int j = 0; j < N; ++j)
+            result[i][j] = m1[i][j] + m2[i][j];
 
     return result;
 }
 
 matrix_2d subtract_2d_matrix(matrix_2d m1, matrix_2d m2) {
-    matrix_2d result;
-    std::vector<int> temp;
+    matrix_2d result = fill_matrix_with_zeroes(m1.size());
     int N = m1.size();
 
-    for(int i = 0; i < N; ++i) {
-        for(int j = 0; j < N; ++j) {
-            temp.push_back(m1[i][j] - m2[i][j]);
-        }
-        result.push_back(temp);
-        temp.clear();
-    }
+    for(int i = 0; i < N; ++i)
+        for(int j = 0; j < N; ++j)
+            result[i][j] = m1[i][j] - m2[i][j];
 
     return result;
 }
@@ -106,25 +104,12 @@ std::tuple<matrix_2d, matrix_2d, matrix_2d, matrix_2d> split_matrix(matrix_2d m)
 }
 
 std::vector<int> fill_array_with_zeroes(int size) {
-    std::vector<int> result;
-
-    for(int i = 0; i < size; ++i) {
-        result.push_back(0);
-    }
+    std::vector<int> result(size);
     return result;
 }
+
 matrix_2d fill_matrix_with_zeroes(int size) {
-    matrix_2d result;
-    std::vector<int> temp;
-
-    for(int i = 0; i < size; ++i) {
-        for(int j = 0; j < size; ++j) {
-            temp.push_back(0);
-        }
-        result.push_back(temp);
-        temp.clear();
-    }
-
+    matrix_2d result(size, std::vector<int>(size));
     return result;
 }
 
@@ -146,7 +131,7 @@ matrix_2d combine_matrix(matrix_2d m1, matrix_2d m2, matrix_2d m3, matrix_2d m4)
     return combined;
 }
 
-std::tuple<matrix_2d, matrix_2d> generate_random_matrix(int size) {
+std::tuple<matrix_2d, matrix_2d> generate_random_matrices(int size) {
     matrix_2d m1 = fill_matrix_with_zeroes(size);
     matrix_2d m2 = fill_matrix_with_zeroes(size);
 
