@@ -33,16 +33,12 @@ void pad_matrices_till_square(matrix_2d& m1, matrix_2d& m2) {
     int padding_constant = pow(2, std::ceil(std::log(largest_side)/std::log(2)));
 
     // pad columns with 0s
+    std::vector<int> m1_pad_col(padding_constant-m1[0].size());
+    std::vector<int> m2_pad_col(padding_constant-m2[0].size());
     for(int i = 0; i < m1.size(); ++i)
-        if(m1[i].size() < padding_constant) {
-            std::vector<int> pad_col(padding_constant-m1[i].size());
-            m1[i].insert(m1[i].end(), pad_col.begin(), pad_col.end());
-        }
+        m1[i].insert(m1[i].end(), m1_pad_col.begin(), m1_pad_col.end());
     for(int i = 0; i < m2.size(); ++i)
-        if(m2[i].size() < padding_constant) {
-            std::vector<int> pad_col(padding_constant-m2[i].size());
-            m2[i].insert(m2[i].end(), pad_col.begin(), pad_col.end());
-        }
+        m2[i].insert(m2[i].end(), m2_pad_col.begin(), m2_pad_col.end());
 
     // pad rows with 0s
     std::vector<int> row_pad(largest_side);
@@ -50,7 +46,6 @@ void pad_matrices_till_square(matrix_2d& m1, matrix_2d& m2) {
     int m2_number_of_rows_to_add = padding_constant - m2.size();
     for(int i = 0; i < m1_number_of_rows_to_add; ++i)
         m1.push_back(row_pad);
-
     for(int i = 0; i < m2_number_of_rows_to_add; ++i)
         m2.push_back(row_pad);
 }
