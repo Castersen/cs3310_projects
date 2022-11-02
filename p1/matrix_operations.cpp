@@ -34,7 +34,7 @@ matrix_2d add_2d_matrix(matrix_2d m1, matrix_2d m2) {
 
     for(int i = 0; i < N; ++i) {
         for(int j = 0; j < N; ++j) {
-            temp.push_back(m1[j][i] + m2[j][i]);
+            temp.push_back(m1[i][j] + m2[i][j]);
         }
         result.push_back(temp);
         temp.clear();
@@ -50,7 +50,7 @@ matrix_2d subtract_2d_matrix(matrix_2d m1, matrix_2d m2) {
 
     for(int i = 0; i < N; ++i) {
         for(int j = 0; j < N; ++j) {
-            temp.push_back(m1[j][i] - m2[j][i]);
+            temp.push_back(m1[i][j] - m2[i][j]);
         }
         result.push_back(temp);
         temp.clear();
