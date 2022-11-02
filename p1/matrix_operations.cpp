@@ -41,7 +41,7 @@ void pad_matrices_till_square(matrix_2d& m1, matrix_2d& m2) {
         m2[i].insert(m2[i].end(), m2_pad_col.begin(), m2_pad_col.end());
 
     // pad rows with 0s
-    std::vector<int> row_pad(largest_side);
+    std::vector<int> row_pad(padding_constant);
     int m1_number_of_rows_to_add = padding_constant - m1.size();
     int m2_number_of_rows_to_add = padding_constant - m2.size();
     for(int i = 0; i < m1_number_of_rows_to_add; ++i)
