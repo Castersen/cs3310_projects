@@ -17,8 +17,11 @@ matrix_2d naive_divide_and_conquer(matrix_2d m1, matrix_2d m2) {
 	matrix_2d C = fill_matrix_with_zeroes(m1.size());
 	int N = m1.size();
 
-	if(N == 1) {
-		C[0][0] = m1[0][0] * m2[0][0];
+	if(N == 2) {
+		C[0][0] = m1[0][0] * m2[0][0] + m1[0][1] * m2[1][0];
+		C[0][1] = m1[0][0] * m2[0][1] + m1[0][1] * m2[1][1];
+		C[1][0] = m1[1][0] * m2[0][0] + m1[1][1] * m2[1][0];
+		C[1][1] = m1[1][0] * m2[0][1] + m1[1][1] * m2[1][1];
 		return C;
 	} else {
 		matrix_2d A11,A12,A21,A22,
