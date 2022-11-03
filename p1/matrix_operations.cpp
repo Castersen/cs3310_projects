@@ -15,39 +15,28 @@ void print_2d_matrix(matrix_2d m) {
 }
 
 void pad_matrices_till_square(matrix_2d& m1, matrix_2d& m2) {
-    // If both are already square matrices of the same size no need to pad
-    if((m1.size() == m2.size()) and (m1[0].size() == m2[0].size())
-        and (pow(2,std::floor(std::log(m1.size()*m1[0].size())/std::log(2))) 
-                == m1.size()*m1[0].size())) 
-    {
-            return;
+    // Determine the next closest power of 2
+    int padding_constant = pow(2, std::ceil(std::log(m1.size())/std::log(2)));
+
+    // Check if the matrices are already square, no need to pad if they are
+    if(padding_constant == m1.size()) {
+        return;
     }
-    int m1_largest_side = std::max(m1.size(), m1[0].size());
-    int m2_largest_side = std::max(m2.size(), m2[0].size());
-    int largest_side = std::max(m1_largest_side, m2_largest_side);
 
-    // used to determine the next closest power of 2, idea
-    // 2^n = 12 -> nln(2) = ln(12) -> n = ln(12)/ln(2) n = 3.54
-    // now if we take the ceiling we know the next closest power of 2
-    // is 2^4 = 16, so that is our padding constant
-    int padding_constant = pow(2, std::ceil(std::log(largest_side)/std::log(2)));
-
+    int pad_ammount = padding_constant - m1.size();
     // pad columns with 0s
-    std::vector<int> m1_pad_col(padding_constant-m1[0].size());
-    std::vector<int> m2_pad_col(padding_constant-m2[0].size());
-    for(int i = 0; i < m1.size(); ++i)
-        m1[i].insert(m1[i].end(), m1_pad_col.begin(), m1_pad_col.end());
-    for(int i = 0; i < m2.size(); ++i)
-        m2[i].insert(m2[i].end(), m2_pad_col.begin(), m2_pad_col.end());
+    std::vector<int> pad_col(pad_ammount);
+    for(int i = 0; i < m1.size(); ++i) {
+        m1[i].insert(m1[i].end(), pad_col.begin(), pad_col.end());
+        m2[i].insert(m2[i].end(), pad_col.begin(), pad_col.end());
+    }
 
     // pad rows with 0s
     std::vector<int> row_pad(padding_constant);
-    int m1_number_of_rows_to_add = padding_constant - m1.size();
-    int m2_number_of_rows_to_add = padding_constant - m2.size();
-    for(int i = 0; i < m1_number_of_rows_to_add; ++i)
+    for(int i = 0; i < pad_ammount; ++i) {
         m1.push_back(row_pad);
-    for(int i = 0; i < m2_number_of_rows_to_add; ++i)
         m2.push_back(row_pad);
+    }
 }
 
 matrix_2d slice_2d_matrix(matrix_2d m, int x0, int x1, int y0, int y1) {
