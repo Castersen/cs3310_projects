@@ -33,6 +33,7 @@
 
 # Vscode
 */*.vscode/**
+*.vscode
 
 # Our executable
 output
