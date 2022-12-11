@@ -3,6 +3,7 @@
 
 int main()
 {
+    // Dijkstra
     matrix_2d adjacency_matrix = 
     {
     //   0        1        2        3        4        5        6        7 
@@ -33,5 +34,31 @@ int main()
     std::cout << "\nPrevious Map:\n--------------\n";
     for(auto entry : previous_map)
         std::cout << "ID: " << entry.first << " Previous: " << entry.second << std::endl;
+    std::cout << std::endl;
 
+
+    // Floyd warshall
+    matrix_2d floyd_adjacency_matrix = 
+    {
+    //   1        2        3        4        5
+        {0,       3,       8,       INT_MAX, -4     },
+        {INT_MAX, 0,       INT_MAX, 1,       7      },
+        {INT_MAX, 4,       0,       INT_MAX, INT_MAX},
+        {2,       INT_MAX, -5,      0,       INT_MAX},
+        {INT_MAX, INT_MAX, INT_MAX, 6,       0      },
+    };
+
+    std::tuple<std::vector<Vertice*>, std::vector<Edge* >, Vertice*> floyd_graph_tuple;
+    floyd_graph_tuple = make_directed_graph(floyd_adjacency_matrix);
+    auto[v, e, s] = floyd_graph_tuple;
+    Graph floyd_graph = Graph(&e, &v);
+
+    matrix_2d floyd_matrix = floyd_warshall(floyd_graph);
+
+    for(int i = 0; i < floyd_matrix.size(); ++i) {
+        for(int j = 0; j < floyd_matrix[i].size(); ++j) {
+            std::cout << floyd_matrix[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
 }

@@ -20,4 +20,6 @@ void relax(Vertice* u, Vertice* v, hash_map& distance_map, hash_map& previous_ma
 
 std::tuple<hash_map, hash_map> dijkstras(Graph& directed_graph, Vertice& starting_vertice);
 
+matrix_2d floyd_warshall(Graph& directed_graph);
+
 #endif

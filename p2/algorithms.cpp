@@ -2,6 +2,7 @@
 #include <vector>
 #include <tuple>
 #include <iostream>
+#include <algorithm>
 #include "graph.h"
 
 typedef std::unordered_map<int, int> hash_map;
@@ -76,6 +77,40 @@ void relax(Vertice* u, Vertice* v, hash_map& distance_map, hash_map& previous_ma
         set_value(v->id, u_distance + u_v_weight, distance_map);
         set_value(v->id, u->id, previous_map);
     }
+}
+
+// Floyd warshall algorithm
+matrix_2d floyd_warshall(Graph& directed_graph) {
+    int n = directed_graph.vertices->size();
+    matrix_2d d(n, std::vector<int>(n)), previous_d(n, std::vector<int>(n));
+
+    for(int u = 0; u < n; ++u) {
+        for(int v = 0; v < n; ++v) {
+            if(u == v) {
+                d[u][v] = 0;
+                previous_d[u][v] = 0;
+                continue;
+            }
+            int j = directed_graph.get_weight(directed_graph.vertices->at(u), directed_graph.vertices->at(v));
+            // TODO fix this
+            if(j == INT_MAX) {
+                j = 99999;
+            }
+            d[u][v] = j;
+        }
+    }
+    previous_d = d;
+
+    for(int k = 0; k < n; ++k) {
+        for(int u = 0; u < n; ++u) {
+            for(int v = 0; v < n; ++v) {
+                d[u][v] = std::min(previous_d[u][v], (previous_d[u][k] + previous_d[k][v]));
+            }
+        }
+        previous_d = d;
+    }
+
+    return d;
 }
 
 // Helpers for performing lookups in the hash map
