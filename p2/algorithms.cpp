@@ -86,11 +86,7 @@ matrix_2d floyd_warshall(Graph& directed_graph) {
 
     for(int u = 0; u < n; ++u) {
         for(int v = 0; v < n; ++v) {
-            if(u == v) {
-                d[u][v] = 0;
-                previous_d[u][v] = 0;
-                continue;
-            }
+            if(u == v) continue;
             int j = directed_graph.get_weight(directed_graph.vertices->at(u), directed_graph.vertices->at(v));
             // TODO fix this
             if(j == INT_MAX) {
