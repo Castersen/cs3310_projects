@@ -36,10 +36,10 @@ std::tuple<hash_map, hash_map> dijkstras(Graph& directed_graph, Vertice& startin
     for(int i = 0; i < directed_graph.vertices->size() - 1; ++i) {
         // u is the vertice that has the minimum distance, and has been unvisited
         Vertice* u = get_vertice(marked_map, distance_map, *directed_graph.vertices);
+        // No way to reach this vertice from starting vertice
         if(u == nullptr) continue;
         set_value(u->id, 1, marked_map);
 
-        // No way to reach this vertice from starting vertice
 
         for(std::tuple<Vertice*, int*> v : u->neighbors) {
             Vertice* vertice = std::get<0>(v);
