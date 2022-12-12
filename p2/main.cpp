@@ -23,17 +23,17 @@ int main()
 
     std::cout << "Ditance Map:\n--------------\n";
     for(auto entry : distance_map) {
-        std::cout << "ID: " << entry.first << " Distance: " << entry.second << std::endl;
+        std::cout << "ID: " << entry.first+1 << " Distance: " << entry.second << std::endl;
 
     }
 
     std::cout << "\nPrevious Map:\n--------------\n";
     for(auto entry : previous_map) {
         if((distance_map.find(entry.first))->second == INT_MAX and entry.second == 0) {
-            std::cout << "ID: " << entry.first << " Previous: " << INT_MAX << std::endl;
-
+            std::cout << "ID: " << entry.first+1 << " Previous: " << INT_MAX << std::endl;
+            continue;
         }
-        std::cout << "ID: " << entry.first << " Previous: " << entry.second << std::endl;
+        std::cout << "ID: " << entry.first+1 << " Previous: " << entry.second+1 << std::endl;
     }
     std::cout << std::endl;
 
