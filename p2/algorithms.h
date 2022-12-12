@@ -20,6 +20,9 @@ void relax(Vertice* u, Vertice* v, hash_map& distance_map, hash_map& previous_ma
 
 std::tuple<hash_map, hash_map> dijkstras(Graph& directed_graph, Vertice& starting_vertice);
 
-matrix_2d floyd_warshall(Graph& directed_graph);
+std::tuple<matrix_2d, matrix_2d> floyd_warshall(Graph& directed_graph);
+
+void print_direction_output(matrix_2d floyd_previous_matrix);
+void print_shortest_path(int p1, int p2, matrix_2d floyd_p_matrix);
 
 #endif

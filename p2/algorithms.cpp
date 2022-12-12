@@ -16,6 +16,8 @@ T get_value(const T& key, std::unordered_map<T,T>& map);
 
 Vertice* get_vertice(hash_map& visited_map, hash_map& distance_map, std::vector<Vertice*>& vertices);
 void relax(Vertice* u, Vertice* v, hash_map& distance_map, hash_map& previous_map, Graph& g);
+void print_direction_output(matrix_2d floyd_previous_matrix);
+void print_shortest_path(int p1, int p2, matrix_2d floyd_p_matrix);
 
 // Dijkstras algorithm
 std::tuple<hash_map, hash_map> dijkstras(Graph& directed_graph, Vertice& starting_vertice) {
@@ -81,33 +83,49 @@ void relax(Vertice* u, Vertice* v, hash_map& distance_map, hash_map& previous_ma
 }
 
 // Floyd warshall algorithm
-matrix_2d floyd_warshall(Graph& directed_graph) {
+std::tuple<matrix_2d, matrix_2d> floyd_warshall(Graph& directed_graph) {
     int n = directed_graph.vertices->size();
     matrix_2d d(n, std::vector<int>(n)), previous_d(n, std::vector<int>(n));
+    matrix_2d p(n, std::vector<int>(n)), previous_p(n, std::vector<int>(n));
 
     for(int u = 0; u < n; ++u) {
         for(int v = 0; v < n; ++v) {
-            if(u == v) continue;
+            if(u == v) {
+                p[u][v] = -1;
+                continue;
+            }
             int j = directed_graph.get_weight(directed_graph.vertices->at(u), directed_graph.vertices->at(v));
             // TODO fix this
             if(j == INT_MAX) {
+                p[u][v] = -1;
                 j = 99999;
+            } else {
+                p[u][v] = u + 1;
             }
             d[u][v] = j;
         }
     }
+    previous_p = p;
     previous_d = d;
 
     for(int k = 0; k < n; ++k) {
         for(int u = 0; u < n; ++u) {
             for(int v = 0; v < n; ++v) {
                 d[u][v] = std::min(previous_d[u][v], (previous_d[u][k] + previous_d[k][v]));
+                if(previous_d[u][v] <= previous_d[u][k] + previous_d[k][v]) {
+                    p[u][v] = previous_p[u][v];
+                }
+                else {
+                    p[u][v] = previous_p[k][v];
+                }
+
             }
         }
+        previous_p = p;
         previous_d = d;
     }
 
-    return d;
+    return std::tie(d, p);
 }
 
 // Helpers for performing lookups in the hash map
@@ -127,4 +145,40 @@ T get_value(const T& key, std::unordered_map<T,T>& map) {
         throw std::out_of_range("Unable to find item in map");
 
     return found_item->second;
+}
+
+void print_direction_output(matrix_2d floyd_previous_matrix) {
+    for(int i = 0; i < floyd_previous_matrix.size(); ++i) {
+        for(int j = 0; j < floyd_previous_matrix.size(); ++j) {
+            if(floyd_previous_matrix[i][j] != -1) {
+                print_shortest_path(i, j, floyd_previous_matrix);
+            }
+        }
+    }
+}
+
+void print_shortest_path(int p1, int p2, matrix_2d floyd_p_matrix) {
+    std::vector<int> path;
+    path.push_back(p2+1);
+    int next_val = p2;
+
+    while(true) {
+        if(floyd_p_matrix[p1][next_val] == -1) {
+            break;
+        }
+
+        path.push_back(floyd_p_matrix[p1][next_val]);
+        next_val = (floyd_p_matrix[p1][next_val]) - 1;
+    }
+
+    // Printing the output
+    for(int i = path.size()-1; i >= 0; i--) {
+        if(i == 0) {
+            std::cout << path.at(i);
+            continue;
+        }
+        std::cout << path.at(i) << "->";
+    }
+    std::cout << std::endl;
+
 }

@@ -103,5 +103,27 @@ int main()
     //     {2,       INT_MAX, -5,      0,       INT_MAX},
     //     {INT_MAX, INT_MAX, INT_MAX, 6,       0      },
     // };
+    // Graph* floyd_graph = make_directed_graph(floyd_adjacency_matrix);
+    // std::tuple<matrix_2d, matrix_2d> tup = floyd_warshall(*floyd_graph);
+    // auto[d,p] = tup;
 
+    // for(int i = 0; i < d.size(); ++i) {
+    //     for(int j = 0; j < d.at(i).size(); ++j) {
+    //         std::cout << d[i][j] << " ";
+    //     }
+    //     std::cout << std::endl;
+    // }
+
+    // std::cout << std::endl;
+    // for(int i = 0; i < p.size(); ++i) {
+    //     for(int j = 0; j < p.at(i).size(); ++j) {
+    //         std::cout << p[i][j] << " ";
+    //     }
+    //     std::cout << std::endl;
+    // }
+
+    // std::cout << std::endl;
+    // print_direction_output(p);
+    // // print_shortest_path(0,2,p);
+    // delete(floyd_graph);
 }
