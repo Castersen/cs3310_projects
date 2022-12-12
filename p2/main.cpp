@@ -6,24 +6,25 @@
 #include "math.h"
 
 const int inner_iter = 4;
-const int outer_iter = 10;
+const int outer_iter = 5;
+const int factor = 100;
 int main()
 {
         for(int i = 1; i < outer_iter; ++i) {
             /* ========================== Dijkstras sparse graph */
-            matrix_2d dijkstras_sparse_adj = generate_sparse_adjacency_matrix(i*10, 1, 100);
+            matrix_2d dijkstras_sparse_adj = generate_sparse_adjacency_matrix(i*factor, 1, 100);
             Graph* dijkstras_sparse_graph = make_directed_graph(dijkstras_sparse_adj);
 
             /* ========================== Dijkstras dense graph */
-            matrix_2d dijkstras_dense_adj = generate_dense_adjacency_matrix(i*10, 1, 100);
+            matrix_2d dijkstras_dense_adj = generate_dense_adjacency_matrix(i*factor, 1, 100);
             Graph* dijkstras_dense_graph = make_directed_graph(dijkstras_dense_adj);
 
             /* ========================== Floyd sparse graph */
-            matrix_2d floyd_sparse_adj = generate_sparse_adjacency_matrix(i*10, 1, 100);
+            matrix_2d floyd_sparse_adj = generate_sparse_adjacency_matrix(i*factor, 1, 100);
             Graph* floyd_sparse_graph = make_directed_graph(floyd_sparse_adj);
 
             /* ========================== Floyd dense graph */
-            matrix_2d floyd_dense_adj = generate_dense_adjacency_matrix(i*10, -10, 100);
+            matrix_2d floyd_dense_adj = generate_dense_adjacency_matrix(i*factor, -10, 100);
             Graph* floyd_dense_graph = make_directed_graph(floyd_dense_adj);
 
         std::cout << "Starting test run " << i << std::endl;
@@ -35,7 +36,7 @@ int main()
             dijkstras(*dijkstras_sparse_graph, *(dijkstras_sparse_graph->vertices->at(0)));
             auto stop = std::chrono::high_resolution_clock::now();
             auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-            std::cout << "Algo: Dijkstras Sparse " << "Size of Graph: " << i * 10
+            std::cout << "Algo: Dijkstras Sparse " << "Size of Graph: " << i*factor
                         <<  " Time: " << duration.count() / pow(10,6) << " seconds" << std::endl;
         }
 
@@ -45,7 +46,7 @@ int main()
             dijkstras(*dijkstras_dense_graph, *(dijkstras_dense_graph->vertices->at(0)));
             auto stop = std::chrono::high_resolution_clock::now();
             auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-            std::cout << "Algo: Dijkstras Dense " << "Size of Graph: " << i * 10
+            std::cout << "Algo: Dijkstras Dense " << "Size of Graph: " << i*factor
                         <<  " Time: " << duration.count() / pow(10,6) << " seconds" << std::endl;
         }
 
@@ -55,7 +56,7 @@ int main()
             floyd_warshall(*floyd_sparse_graph);
             auto stop = std::chrono::high_resolution_clock::now();
             auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-            std::cout << "Algo: Floyd Sparse " << "Size of Graph: " << i * 10
+            std::cout << "Algo: Floyd Sparse " << "Size of Graph: " << i*factor
                         <<  " Time: " << duration.count() / pow(10,6) << " seconds" << std::endl;
         }
 
@@ -65,7 +66,7 @@ int main()
             floyd_warshall(*floyd_dense_graph);
             auto stop = std::chrono::high_resolution_clock::now();
             auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
-            std::cout << "Algo: Floyd Dense " << "Size of Graph: " << i * 10
+            std::cout << "Algo: Floyd Dense " << "Size of Graph: " << i*factor
                         <<  " Time: " << duration.count() / pow(10,6) << " seconds" << std::endl;
         }
 
