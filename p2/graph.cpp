@@ -2,6 +2,7 @@
 #include <tuple>
 #include <iostream>
 #include "graph.h"
+#include <climits>
 
 typedef std::vector<std::vector<int>> matrix_2d;
 
@@ -68,6 +69,9 @@ Graph* make_directed_graph(matrix_2d& adjacency_matrix)
 
     for(int i = 0; i < adjacency_matrix.size(); ++i) {
         vertices->push_back(new Vertice(i));
+    }
+
+    for(int i = 0; i < adjacency_matrix.size(); ++i) {
         for(int j = 0; j < adjacency_matrix[i].size(); ++j) {
             if(adjacency_matrix[i][j] == INT_MAX || adjacency_matrix[i][j] == 0) continue;
 
@@ -76,7 +80,6 @@ Graph* make_directed_graph(matrix_2d& adjacency_matrix)
                 if(each_vertice->id == j)
                     end_vertice = each_vertice;
 
-            end_vertice = (end_vertice == nullptr) ? new Vertice(j) : end_vertice;
             final_edges->push_back(new Edge(adjacency_matrix[i][j], vertices->at(i), end_vertice));
         }
     }

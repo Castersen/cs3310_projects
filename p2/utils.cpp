@@ -1,6 +1,7 @@
 #include <vector>
 #include <random>
 #include <chrono>
+#include <climits>
 
 int random_number_generator(int starting_range, int ending_range) {
     // Seed the random number generator

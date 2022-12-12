@@ -4,6 +4,7 @@
 #include <iostream>
 #include <algorithm>
 #include "graph.h"
+#include <climits>
 
 typedef std::unordered_map<int, int> hash_map;
 
