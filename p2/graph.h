@@ -18,6 +18,8 @@ struct Vertice {
     int id;
     static int number_of_vertices;
     std::vector<std::tuple<Vertice*, int*>> neighbors;
+
+    ~Vertice();
 };
 
 struct Edge
@@ -27,6 +29,8 @@ struct Edge
     int weight;
     Vertice* start_vertice;
     Vertice* end_vertice;
+
+    ~Edge();
 };
 
 struct Graph
@@ -38,8 +42,10 @@ struct Graph
 
     std::vector<Edge*>* edges;
     std::vector<Vertice*>* vertices;
+
+    ~Graph();
 };
 
-std::tuple<std::vector<Vertice*>, std::vector<Edge* >, Vertice*> make_directed_graph(matrix_2d& adjacency_matrix);
+Graph* make_directed_graph(matrix_2d& adjacency_matrix);
 
 #endif
